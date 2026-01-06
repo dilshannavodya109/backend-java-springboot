@@ -1,6 +1,5 @@
 package co.devskills.springbootboilerplate.dto;
-import java.time.LocalDateTime;
-import co.devskills.springbootboilerplate.dto.ActionStatus;
+import java.time.LocalDate;
 import lombok.Builder;
 
 @Builder
@@ -9,5 +8,5 @@ public record TodoResponse(
         String name,
         String description,
         ActionStatus status,
-        LocalDateTime createdAt
+        LocalDate createdAt
 ) {}

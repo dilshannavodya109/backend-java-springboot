@@ -4,12 +4,12 @@ import java.time.Instant;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import co.devskills.springbootboilerplate.error.NotFoundException;
 import co.devskills.springbootboilerplate.dto.ApiError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.validation.FieldError;
 import java.util.*;
 
 
@@ -28,6 +28,23 @@ public class ApiExceptionHandler {
                 .toList();
 
         return build(HttpStatus.BAD_REQUEST, "Validation failed", req.getRequestURI(), fields);
+    }
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ApiError> handleInvalidEnum(
+            HttpMessageNotReadableException ex,
+            HttpServletRequest request
+    ) {
+
+        return ResponseEntity.badRequest().body(
+                new ApiError(
+                        Instant.now(),
+                        400,
+                        "Bad Request",
+                        ex.getMessage(),
+                        request.getRequestURI(),
+                        List.of()
+                )
+        );
     }
 
     private ResponseEntity<ApiError> build(

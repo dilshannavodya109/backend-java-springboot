@@ -2,8 +2,9 @@ package co.devskills.springbootboilerplate.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp; 
-import java.time.LocalDateTime;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.time.LocalDate;
 import co.devskills.springbootboilerplate.dto.ActionStatus;
 
 @Entity
@@ -29,7 +30,7 @@ public class TodoEntity{
     
     @CreationTimestamp
     @Column(nullable = false, updatable = false)
-    private LocalDateTime createdAt;
+    private LocalDate createdAt;
 
 
     public void update(String name, String description, ActionStatus status) {
