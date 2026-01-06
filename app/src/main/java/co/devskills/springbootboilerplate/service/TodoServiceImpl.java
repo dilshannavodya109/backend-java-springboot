@@ -12,17 +12,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 @Service
+@RequiredArgsConstructor
 public class TodoServiceImpl implements TodoService{
     private final TodoRepository todoRepository;
 
-
-    public TodoServiceImpl(final TodoRepository todoRepository) {
-        this.todoRepository = todoRepository;
-    }
-
     @Transactional(readOnly = true) 
     public TodoEntity getTodo(Long id){
-        return todoRepository.findById(id).orElseThrow(() -> new NotFoundException("Todo not found"));
+        return getOrThrow(id);
     }
 
     @Transactional
@@ -41,16 +37,19 @@ public class TodoServiceImpl implements TodoService{
 
     @Transactional
     public TodoEntity updateTodo(Long id, UpdateTodoRequest updateTodoRequest){
-        TodoEntity todoEntity = todoRepository.findById(id).orElseThrow(() -> new NotFoundException("Todo not found"));
-        todoEntity.setName(updateTodoRequest.name());
-        todoEntity.setDescription(updateTodoRequest.description());
-        todoEntity.setStatus(updateTodoRequest.status());
-        return todoRepository.save(todoEntity);     
+        TodoEntity todoEntity = getOrThrow(id);
+        todoEntity.update(updateTodoRequest.name(), updateTodoRequest.description(), updateTodoRequest.status());
+        return todoEntity;     
     }
 
     @Transactional
     public void deleteTodo(Long id){
-        TodoEntity todoEntity = todoRepository.findById(id).orElseThrow(() -> new NotFoundException("Todo not found"));
+        TodoEntity todoEntity = getOrThrow(id);
         todoRepository.delete(todoEntity);  
+    }
+
+    private TodoEntity getOrThrow(Long id) {
+        return todoRepository.findById(id)
+            .orElseThrow(() -> new NotFoundException("Todo not found"));
     }
 }

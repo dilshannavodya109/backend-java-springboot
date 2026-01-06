@@ -1,7 +1,6 @@
 package co.devskills.springbootboilerplate.handler;
 
 import java.time.Instant;
-import java.util.List;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,6 +8,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import co.devskills.springbootboilerplate.error.NotFoundException;
 import co.devskills.springbootboilerplate.dto.ApiError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.validation.FieldError;
+import java.util.*;
 
 
 @RestControllerAdvice
@@ -19,7 +21,16 @@ public class ApiExceptionHandler {
         return build(HttpStatus.NOT_FOUND, ex.getMessage(), req.getRequestURI(), List.of());
     }
 
-     private ResponseEntity<ApiError> build(
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    ResponseEntity<ApiError> validation(MethodArgumentNotValidException ex, HttpServletRequest req) {
+        var fields = ex.getFieldErrors().stream()
+                .map(e -> new ApiError.FieldError(e.getField(), e.getDefaultMessage()))
+                .toList();
+
+        return build(HttpStatus.BAD_REQUEST, "Validation failed", req.getRequestURI(), fields);
+    }
+
+    private ResponseEntity<ApiError> build(
             HttpStatus status, String message, String path, List<ApiError.FieldError> fields
     ) {
         return ResponseEntity.status(status).body(

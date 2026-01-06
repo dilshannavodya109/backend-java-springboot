@@ -9,7 +9,7 @@ import co.devskills.springbootboilerplate.dto.ActionStatus;
 @Entity
 @Getter
 @Setter
-@Table(name = "TodoData")
+@Table(name = "todos")
 @NoArgsConstructor
 public class TodoEntity{
     
@@ -30,4 +30,17 @@ public class TodoEntity{
     @CreationTimestamp
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
+
+
+    public void update(String name, String description, ActionStatus status) {
+        if (name != null && !name.isBlank()) {
+            this.name = name;
+        }
+        if (description != null && !description.isBlank()) {
+            this.description = description;
+        }
+        if (status != null) {
+            this.status = status;
+        }
+    }
 }

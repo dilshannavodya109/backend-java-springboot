@@ -24,23 +24,19 @@ import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+
 @RestController
 @RequestMapping("/api/v1/todos")
+@RequiredArgsConstructor
 public class TodoController {
 
-    public final TodoService todoService;
-
-    public TodoController(final TodoService todoService) {
-        this.todoService = todoService;
-    }
-
+    private final TodoService todoService;
 
     @PostMapping
-    public ResponseEntity<TodoResponse> createTodo(@RequestBody RequestTodo requestTodo){
+    public ResponseEntity<TodoResponse> createTodo(@Valid @RequestBody RequestTodo requestTodo){
         TodoEntity createdTodo = todoService.save(requestTodo);
         return ResponseEntity.status(HttpStatus.CREATED).body(TodoResponseMapper.toResponse(createdTodo));
     }
-
 
 
     @GetMapping
