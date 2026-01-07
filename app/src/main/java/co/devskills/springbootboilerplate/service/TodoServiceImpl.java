@@ -2,6 +2,7 @@ package co.devskills.springbootboilerplate.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import lombok.RequiredArgsConstructor;
 import co.devskills.springbootboilerplate.dto.ActionStatus;
 import co.devskills.springbootboilerplate.dto.RequestTodo;
 import co.devskills.springbootboilerplate.entity.TodoEntity;
