@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import co.devskills.springbootboilerplate.error.NotFoundException;
 import co.devskills.springbootboilerplate.dto.ApiError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.validation.FieldError;
 import java.util.*;
 
 
