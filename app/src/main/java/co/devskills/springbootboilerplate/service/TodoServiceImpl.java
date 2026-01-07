@@ -1,9 +1,8 @@
 package co.devskills.springbootboilerplate.service;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import lombok.RequiredArgsConstructor;
-import co.devskills.springbootboilerplate.dto.ActionStatus;
 import co.devskills.springbootboilerplate.dto.RequestTodo;
 import co.devskills.springbootboilerplate.entity.TodoEntity;
 import co.devskills.springbootboilerplate.error.NotFoundException;
@@ -27,7 +26,7 @@ public class TodoServiceImpl implements TodoService{
         TodoEntity todoEntity = new TodoEntity();
         todoEntity.setName(requestTodo.name());
         todoEntity.setDescription(requestTodo.description());
-        todoEntity.setStatus(ActionStatus.PENDING);
+        todoEntity.setStatus(requestTodo.status());
         return todoRepository.save(todoEntity);
     }
 
